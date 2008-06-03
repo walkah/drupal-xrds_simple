@@ -1,0 +1,4 @@
+; $Id$
+name = XRDS Simple
+description = Implements the XRDS-Simple spec for discovering services
+core = 6.x
