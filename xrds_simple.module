@@ -56,30 +56,29 @@ function xrds_simple_document($account = NULL) {
   }
   
   $output = '<?xml version="1.0" encoding="UTF-8" ?>' . "\n";
-	$output .= '<XRDS xmlns="xri://$xrds">' . "\n";
-
+  $output .= '<XRDS xmlns="xri://$xrds">' . "\n";
+  
   foreach ($xrds as $xrd) {
-		$output .= '  <XRD xmlns="xri://$xrd*($v*2.0)" version="2.0" xmlns:simple="http://xrds-simple.net/core/1.0"';
+    $output .= '  <XRD xmlns="xri://$xrd*($v*2.0)" version="2.0" xmlns:simple="http://xrds-simple.net/core/1.0"';
     $output .= drupal_attributes($xrd['namespaces']);
     $output .= ">\n";
-		$output .= '    <Type>xri://$xrds*simple</Type>'."\n";
-
+    
     if (is_array($xrd['type'])) { 
       foreach($xrd['type'] as $type) {
         $output .= '    <Type>' . check_plain($type) . '</Type>'."\n";
       }
     }
-
+    
     if (is_array($xrd['expires'])) { 
       foreach($xrd['expires'] as $expires) {
         $output .= '    <Expires>' . check_plain($expires) . '</Expires>'."\n";
       }
     }
-
-		foreach($xrd['services'] as $service) {
-			$output .= '    <Service priority="'.floor($service['priority']).'">'."\n";
-			foreach($service['data'] as $element => $values) {
-				foreach($values as $value) {
+    
+    foreach($xrd['services'] as $service) {
+      $output .= '    <Service priority="'.floor($service['priority']).'">'."\n";
+      foreach($service['data'] as $element => $values) {
+        foreach($values as $value) {
           if (!is_array($value)) {
             $data = $value;
             $value = array();
@@ -91,11 +90,11 @@ function xrds_simple_document($account = NULL) {
           $output .= drupal_attributes($value['attributes']);
           $output .= '>';          
           $output .= check_plain($value['data']) . '</'. check_plain($element) . ">\n";
-				}
-			}
-			$output .= '    </Service>'."\n";
+        }
+      }
+      $output .= '    </Service>'."\n";
     }
-		$output .= '  </XRD>'."\n";
+    $output .= '  </XRD>'."\n";
     
   }
   $output .= '</XRDS>';
