@@ -27,8 +27,14 @@ function xrds_simple_init() {
   else {
     $path = 'xrds';
   }
-  
-  $url = url($path, array('absolute' => TRUE));
+
+  // Prevent any language modifications to the url by generating and using a
+  // fake language object.
+  $language = new stdClass();
+  $language->language = '';
+  $language->prefix = '';
+
+  $url = url($path, array('absolute' => TRUE, 'language' => $language));
   drupal_set_header('X-XRDS-Location: '. $url);
   drupal_set_header('X-Yadis-Location: '. $url);
   drupal_set_html_head('<meta http-equiv="X-XRDS-Location" content="' . $url . '" />');
