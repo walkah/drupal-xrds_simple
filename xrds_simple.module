@@ -107,3 +107,26 @@ function xrds_simple_document($account = NULL) {
   
   return $output;
 }
+
+/**
+ * You need this to prevent some OpenID providers (e.g. Yahoo) from issuing
+ * warnings that your site is unreliable, when people log into your site
+ * using an OpenID identity from those providers. It would probably be part
+ * of the core OpenID module, if XRDS Simple was in core.
+ */
+function openid_xrds($account = NULL) {
+  module_load_include('inc', 'openid');
+
+  $xrds['openid_xrds'] = array(
+    'services' => array(
+      array('priority' => 0,
+        'data' => array(
+          'Type' => array(OPENID_NS_2_0 . '/return_to'),
+          'URI' => array(url('openid/authenticate', array('absolute' => true))),
+        ),
+      ),
+    ),
+  );
+
+  return $xrds;
+}
